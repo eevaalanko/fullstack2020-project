@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
+import {useApolloClient} from "@apollo/client";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,17 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppBarComponent = () => {
+const AppBarComponent = ({user}) => {
+  console.log('app bar user: ', user)
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const user = null; // TODO
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const client = useApolloClient();
+
+  const logout = () => {
+    alert('logged out!')
+    localStorage.clear();
+    client.resetStore();
   };
 
   return (
@@ -64,7 +72,7 @@ const AppBarComponent = () => {
             </MenuItem>
             <MenuItem onClick={handleClose}>
               {user ? (
-                <Link to="/logout">Logout</Link>
+                <Link onClick={logout}>Logout</Link>
               ) : (
                 <Link to="/login">Login</Link>
               )}

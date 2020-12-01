@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import {useApolloClient, useMutation} from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { LOGIN } from "../graphql/queries";
 
@@ -17,11 +17,14 @@ const LoginForm = ({ setError }) => {
     },
   });
 
+  const client = useApolloClient();
+
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;
       console.log('tokeeeennnn: ', token)
       localStorage.setItem("user-token", token);
+      client.resetStore();
       history.push("/");
     }
   }, [result.data]); // eslint-disable-line

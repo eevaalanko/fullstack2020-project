@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useApolloClient } from "@apollo/client";
 import AppBarComponent from "./components/AppBar";
 import { Switch, Route } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent";
 import DescriptionComponent from "./components/DescriptionComponent";
+import useAuthorizedUser from "./hooks/useAuthoriserUser";
 
 // eslint-disable-next-line react/prop-types
 const Notify = ({ errorMessage }) => {
@@ -15,12 +15,8 @@ const Notify = ({ errorMessage }) => {
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
-  const client = useApolloClient();
-
-  const logout = () => {
-    localStorage.clear();
-    client.resetStore();
-  };
+  const user = useAuthorizedUser();
+  console.log("user: ", user);
 
   const notify = (message) => {
     setErrorMessage(message);
@@ -31,7 +27,7 @@ const App = () => {
 
   return (
     <div>
-      <AppBarComponent />
+      <AppBarComponent user={user} />
       <Notify errorMessage={errorMessage} />
       <Switch>
         <Route path="/login">
