@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import LoginForm from "./components/LoginForm";
 import { useApolloClient } from "@apollo/client";
 import AppBarComponent from "./components/AppBar";
-import challengeAppImage from './challengeApp.png';
-import Grid from "@material-ui/core/Grid";
+import { Switch, Route } from "react-router-dom";
+import LoginComponent from "./components/LoginComponent";
+import DescriptionComponent from "./components/DescriptionComponent";
 
 // eslint-disable-next-line react/prop-types
 const Notify = ({ errorMessage }) => {
@@ -12,6 +12,7 @@ const Notify = ({ errorMessage }) => {
   }
   return <div style={{ color: "red" }}>{errorMessage}</div>;
 };
+
 const App = () => {
   const [token, setToken] = useState(null);
   const [page, setPage] = useState(null);
@@ -31,26 +32,19 @@ const App = () => {
     }, 10000);
   };
 
-  if (!token) {
-    return (
-      <div>
-        <AppBarComponent />
-        <Notify errorMessage={errorMessage} />
-          <Grid container justify = "center">
-              <img src={challengeAppImage} height="500" alt="Challenge app" />
-          </Grid>
-
-        <h2>Login</h2>
-        <LoginForm setToken={setToken} setError={notify} />
-      </div>
-    );
-  }
   return (
     <div>
-      <AppBarComponent />
-      <button onClick={logout}>logout</button>
       <Notify errorMessage={errorMessage} />
-      <h1>Challenge App</h1>
+      <AppBarComponent />
+      <DescriptionComponent />
+      <Switch>
+        <Route path="/login">
+          <LoginComponent />
+        </Route>
+        <Route path="/">
+          <p>pöö perusreitti</p>
+        </Route>
+      </Switch>
     </div>
   );
 };
