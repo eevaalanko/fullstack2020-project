@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
-import {useApolloClient} from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppBarComponent = ({user}) => {
-  console.log('app bar user: ', user)
+const AppBarComponent = ({ user }) => {
+  console.log("app bar user: ", user);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -40,7 +40,7 @@ const AppBarComponent = ({user}) => {
   const client = useApolloClient();
 
   const logout = () => {
-    alert('logged out!')
+    alert("logged out!");
     localStorage.clear();
     client.resetStore();
   };
@@ -70,6 +70,11 @@ const AppBarComponent = ({user}) => {
             <MenuItem onClick={handleClose}>
               <Link to="/">About</Link>
             </MenuItem>
+            {user && (
+              <MenuItem onClick={handleClose}>
+                <Link to="/challenges">Challenges</Link>
+              </MenuItem>
+            )}
             <MenuItem onClick={handleClose}>
               {user ? (
                 <Link onClick={logout}>Logout</Link>
@@ -78,7 +83,9 @@ const AppBarComponent = ({user}) => {
               )}
             </MenuItem>
           </Menu>
-        <Typography variant="h6"  className={classes.title}>Your Challenge App</Typography>
+          <Typography variant="h6" className={classes.title}>
+            Your Challenge App
+          </Typography>
         </Toolbar>
       </AppBar>
     </div>

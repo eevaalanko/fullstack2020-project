@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent";
 import DescriptionComponent from "./components/DescriptionComponent";
 import useAuthorizedUser from "./hooks/useAuthoriserUser";
+import ChallengeList from "./components/ChallengeList";
 
 // eslint-disable-next-line react/prop-types
 const Notify = ({ errorMessage }) => {
@@ -32,6 +33,9 @@ const App = () => {
       <Switch>
         <Route path="/login">
           <LoginComponent setError={setErrorMessage} />
+        </Route>
+        <Route path="/challenges">
+          {user && <ChallengeList username={user.username} />}
         </Route>
         <Route path="/">
           <DescriptionComponent />
