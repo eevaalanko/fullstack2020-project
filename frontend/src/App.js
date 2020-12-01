@@ -36,13 +36,13 @@ const App = () => {
     <div>
       <Notify errorMessage={errorMessage} />
       <AppBarComponent />
-      <DescriptionComponent />
+
       <Switch>
         <Route path="/login">
           <LoginComponent />
         </Route>
         <Route path="/">
-          <p>pöö perusreitti</p>
+          <DescriptionComponent />
         </Route>
       </Switch>
     </div>
