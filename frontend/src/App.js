@@ -14,13 +14,10 @@ const Notify = ({ errorMessage }) => {
 };
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  const [page, setPage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const client = useApolloClient();
 
   const logout = () => {
-    setToken(null);
     localStorage.clear();
     client.resetStore();
   };
@@ -34,12 +31,11 @@ const App = () => {
 
   return (
     <div>
-      <Notify errorMessage={errorMessage} />
       <AppBarComponent />
-
+      <Notify errorMessage={errorMessage} />
       <Switch>
         <Route path="/login">
-          <LoginComponent />
+          <LoginComponent setError={setErrorMessage} />
         </Route>
         <Route path="/">
           <DescriptionComponent />

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
-import { LOGIN } from '../queries'
+import React from 'react'
 import LoginForm from "./LoginForm";
 
 // TODO: add sign in
-const LoginComponent = () => {
+const LoginComponent = ({setError}) => {
     return (
         <div>
-            <LoginForm/>
+            <LoginForm setError={setError}/>
         </div>
     )
 }

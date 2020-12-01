@@ -1,53 +1,59 @@
-import React, { useState, useEffect } from 'react'
-import { useMutation } from '@apollo/client'
-import { LOGIN } from '../queries'
+import React, { useState, useEffect } from "react";
+import { useMutation } from "@apollo/client";
+import { useHistory } from "react-router-dom";
+import { LOGIN } from "../graphql/queries";
 
 // eslint-disable-next-line react/prop-types
-const LoginForm = ({ setError, setToken }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-  const [ login, result ] = useMutation(LOGIN, {
+const LoginForm = ({ setError }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  let history = useHistory();
+  const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
-    }
-  })
+      setError(error.graphQLErrors[0].message);
+      setTimeout(function () {
+        setError(null);
+      }, 3000);
+    },
+  });
 
   useEffect(() => {
-    if ( result.data ) {
-      const token = result.data.login.value
-      setToken(token)
-      localStorage.setItem('user-token', token)
+    if (result.data) {
+      const token = result.data.login.value;
+      console.log('tokeeeennnn: ', token)
+      localStorage.setItem("user-token", token);
+      history.push("/");
     }
-    }, [result.data]) // eslint-disable-line
+  }, [result.data]); // eslint-disable-line
 
   const submit = async (event) => {
-    event.preventDefault()
-
-    login({ variables: { username, password } })
-  }
+    event.preventDefault();
+    await login({ variables: { username, password } });
+  };
 
   return (
     <div>
       <h2>Login</h2>
       <form onSubmit={submit}>
         <div>
-            username <input
+          username{" "}
+          <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-            password <input
-            type='password'
+          password{" "}
+          <input
+            type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type='submit'>login</button>
+        <button type="submit">login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

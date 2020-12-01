@@ -6,9 +6,7 @@ import {
   Menu,
   Toolbar,
   IconButton,
-  Button,
   Typography,
-  Grid,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
@@ -62,7 +60,7 @@ const AppBarComponent = () => {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
-              <Link to="/">Home</Link>
+              <Link to="/">About</Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
               {user ? (
