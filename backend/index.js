@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const {
   AuthenticationError,
   UserInputError,
@@ -33,13 +33,14 @@ mongoose
 
 const typeDefs = gql`
   type Challenge {
+    id: ID!
     name: String!
     description: String
+    duration: Int
   }
 
   type User {
     username: String!
-    favoriteGenre: String
     id: ID!
   }
 
@@ -53,8 +54,8 @@ const typeDefs = gql`
     findChallenge(name: String!): Challenge
   }
   type Mutation {
-    createChallenge(name: String!, description: String): Challenge
-    editChallenge(name: String!, description: String): Challenge
+    createChallenge(name: String!, description: String, duration: Int): Challenge
+    editChallenge(name: String!, description: String, duration: Int): Challenge
     createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
   }
@@ -82,7 +83,8 @@ const resolvers = {
       if (!challenge) {
         throw new UserInputError("Challenge not found");
       }
-      challenge.description = args.description;
+      challenge.description = args.description || challenge.description;
+      challenge.duration = args.duration || challenge.duration;
       try {
         await challenge.save();
       } catch (error) {
@@ -96,6 +98,7 @@ const resolvers = {
       const challenge = new Challenge({
         name: args.name,
         description: args.description || null,
+        duration: args.duration || null,
       });
 
       return challenge.save().catch((error) => {

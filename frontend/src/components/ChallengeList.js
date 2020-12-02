@@ -11,6 +11,7 @@ import {
   Paper,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import useChallenges from "../hooks/useChallenges";
 
 const useStyles = makeStyles({
   table: {
@@ -18,32 +19,10 @@ const useStyles = makeStyles({
   },
 });
 
-const createData = (id, name, description, duration) => {
-  return { id, name, description, duration };
-};
-
-// TODO: Get data from database
-const rows = [
-  createData(1, "The Plank Challenge", "...link to challenge", 30),
-  createData(2, "The Yoga Challenge", "...link to challenge", 30),
-  createData(3, "The Push up Challenge", "...link to challenge", 30),
-  createData(4, "The MindFullness Challenge", "...link to challenge", 30),
-  createData(5, "Your Custom Challenge", "...link to challenge", 30),
-];
-
-const columns = [
-  { field: "name", headerName: "Name", width: 200 },
-  { field: "description", headerName: "Description", width: 300 },
-  {
-    field: "duration",
-    headerName: "Duration",
-    type: "number",
-    width: 90,
-  },
-];
-
 const ChallengeList = ({ username }) => {
   const classes = useStyles();
+  const challenges = useChallenges();
+  console.log("challenges: ", challenges);
   return (
     <div>
       <p>
@@ -67,15 +46,16 @@ const ChallengeList = ({ username }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    <Link to="/">{row.name}</Link>
-                  </TableCell>
-                  <TableCell align="right">{row.description}</TableCell>
-                  <TableCell align="right">{row.duration}</TableCell>
-                </TableRow>
-              ))}
+              {challenges &&
+                challenges.map((challenge) => (
+                  <TableRow key={challenge.id}>
+                    <TableCell component="th" scope="row">
+                      <Link to="/">{challenge.name}</Link>
+                    </TableCell>
+                    <TableCell align="right">{challenge.description}</TableCell>
+                    <TableCell align="right">{challenge.duration}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

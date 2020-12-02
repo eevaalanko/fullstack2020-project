@@ -15,3 +15,14 @@ export const ME = gql`
     }
   }
 `;
+
+export const ALL_CHALLENGES = gql`
+  query {
+    allChallenges {
+      id
+      name
+      description
+      duration
+    }
+  }
+`;
