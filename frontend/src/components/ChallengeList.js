@@ -1,5 +1,4 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
 import {
   makeStyles,
   Table,
@@ -41,7 +40,7 @@ const ChallengeList = ({ username }) => {
                   <b>Description</b>
                 </TableCell>
                 <TableCell align="right">
-                  <b>Duration</b>
+                  <b>Duration (days)</b>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -50,7 +49,7 @@ const ChallengeList = ({ username }) => {
                 challenges.map((challenge) => (
                   <TableRow key={challenge.id}>
                     <TableCell component="th" scope="row">
-                      <Link to="/">{challenge.name}</Link>
+                      <Link to={`challenges/${challenge.id}`}>{challenge.name}</Link>
                     </TableCell>
                     <TableCell align="right">{challenge.description}</TableCell>
                     <TableCell align="right">{challenge.duration}</TableCell>
