@@ -22,7 +22,9 @@ export const ALL_CHALLENGES = gql`
       id
       name
       description
+      link
       duration
+      startDate
     }
   }
 `;

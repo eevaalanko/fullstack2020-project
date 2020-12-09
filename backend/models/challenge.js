@@ -10,7 +10,11 @@ const schema = new mongoose.Schema({
   description: {
     type: String,
   },
+  link: {
+    type: String,
+  },
   duration: { type: Number },
+  startDate: { type: String}
 });
 
 module.exports = mongoose.model("Challenge", schema);

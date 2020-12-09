@@ -9,7 +9,6 @@ const { PubSub } = require("apollo-server");
 const pubsub = new PubSub();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-
 const JWT_SECRET = "NEED_HERE_A_SECRET_KEY";
 const Challenge = require("./models/challenge");
 const User = require("./models/user");
@@ -36,7 +35,9 @@ const typeDefs = gql`
     id: ID!
     name: String!
     description: String
+    link: String
     duration: Int
+    startDate: String
   }
 
   type User {
@@ -54,8 +55,14 @@ const typeDefs = gql`
     findChallenge(name: String!): Challenge
   }
   type Mutation {
-    createChallenge(name: String!, description: String, duration: Int): Challenge
-    editChallenge(name: String!, description: String, duration: Int): Challenge
+    createChallenge(
+      name: String!
+      description: String
+      link: String
+      duration: Int
+      startDate: String
+    ): Challenge
+    editChallenge(name: String!, description: String, link: String, duration: Int, startDate: String): Challenge
     createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
   }
@@ -83,8 +90,11 @@ const resolvers = {
       if (!challenge) {
         throw new UserInputError("Challenge not found");
       }
+      challenge.name = args.name || challenge.name;
       challenge.description = args.description || challenge.description;
       challenge.duration = args.duration || challenge.duration;
+      challenge.link = args.link || challenge.link;
+      challenge.startDate = args.startDate || challenge.startDate;
       try {
         await challenge.save();
       } catch (error) {
@@ -98,7 +108,9 @@ const resolvers = {
       const challenge = new Challenge({
         name: args.name,
         description: args.description || null,
+        link: args.link || null,
         duration: args.duration || null,
+        startDate: args.startDate || null,
       });
 
       return challenge.save().catch((error) => {

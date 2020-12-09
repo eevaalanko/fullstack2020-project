@@ -40,7 +40,13 @@ const ChallengeList = ({ username }) => {
                   <b>Description</b>
                 </TableCell>
                 <TableCell align="right">
+                  <b>Link</b>
+                </TableCell>
+                <TableCell align="right">
                   <b>Duration (days)</b>
+                </TableCell>
+                <TableCell align="right">
+                  <b>Start Date</b>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -52,7 +58,9 @@ const ChallengeList = ({ username }) => {
                       <Link to={`challenges/${challenge.id}`}>{challenge.name}</Link>
                     </TableCell>
                     <TableCell align="right">{challenge.description}</TableCell>
+                    <TableCell align="right">{challenge.link}</TableCell>
                     <TableCell align="right">{challenge.duration}</TableCell>
+                    <TableCell align="right">{challenge.startDate}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
