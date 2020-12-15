@@ -11,6 +11,7 @@ export const LOGIN = gql`
 export const ME = gql`
   query {
     me {
+      id
       username
     }
   }
@@ -25,6 +26,24 @@ export const ALL_CHALLENGES = gql`
       link
       duration
       startDate
+    }
+  }
+`;
+
+export const ALL_OWN_CHALLENGES = gql`
+  query {
+    allOwnChallenges {
+      id
+      challenge {
+        name
+      }
+      user {
+        username
+      }
+      description
+      startDate
+      endDate
+      active
     }
   }
 `;

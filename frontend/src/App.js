@@ -7,6 +7,21 @@ import useAuthorizedUser from "./hooks/useAuthoriserUser";
 import ChallengeList from "./components/ChallengeList";
 import useChallenges from "./hooks/useChallenges";
 import ChallengeComponent from "./components/ChallengeComponent";
+import {makeStyles} from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    marginBottom: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
 
 // eslint-disable-next-line react/prop-types
 const Notify = ({ errorMessage }) => {
@@ -17,6 +32,7 @@ const Notify = ({ errorMessage }) => {
 };
 
 const App = () => {
+  const classes = useStyles();
   const [errorMessage, setErrorMessage] = useState(null);
   const user = useAuthorizedUser();
   console.log("user: ", user);
@@ -38,7 +54,7 @@ const App = () => {
       : null;
 
   return (
-    <div>
+    <div className={classes.root}>
       <AppBarComponent user={user} />
       <Notify errorMessage={errorMessage} />
       <Switch>

@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const AppBarComponent = ({ user }) => {
   console.log("app bar user: ", user);
   const classes = useStyles();
+  let history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,12 +42,13 @@ const AppBarComponent = ({ user }) => {
 
   const logout = () => {
     alert("logged out!");
+    history.push("/");
     localStorage.clear();
     client.resetStore();
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <AppBar position="static">
         <Toolbar>
           <IconButton

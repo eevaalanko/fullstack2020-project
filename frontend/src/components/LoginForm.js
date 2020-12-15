@@ -24,7 +24,7 @@ const LoginForm = ({ setError }) => {
       const token = result.data.login.value;
       console.log('tokeeeennnn: ', token)
       localStorage.setItem("user-token", token);
-      history.push("/");
+      history.push("/challenges");
       client.resetStore();
     }
   }, [result.data]); // eslint-disable-line

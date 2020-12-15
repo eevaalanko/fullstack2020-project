@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "NEED_HERE_A_SECRET_KEY";
 const Challenge = require("./models/challenge");
+const OwnChallenge = require("./models/ownChallenge");
 const User = require("./models/user");
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -40,6 +41,17 @@ const typeDefs = gql`
     startDate: String
   }
 
+  type OwnChallenge {
+    id: ID!
+    challenge: Challenge
+    user: User
+    description: String
+    duration: Int
+    startDate: String
+    endDate: String
+    active: Boolean
+  }
+
   type User {
     username: String!
     id: ID!
@@ -52,7 +64,9 @@ const typeDefs = gql`
   type Query {
     me: User
     allChallenges: [Challenge!]!
+    allOwnChallenges: [OwnChallenge]
     findChallenge(name: String!): Challenge
+    activeChallenges: [Challenge]
   }
   type Mutation {
     createChallenge(
@@ -62,7 +76,21 @@ const typeDefs = gql`
       duration: Int
       startDate: String
     ): Challenge
-    editChallenge(name: String!, description: String, link: String, duration: Int, startDate: String): Challenge
+    createOwnChallenge(
+      userID: String
+      challengeID: String
+      description: String
+      startDate: String
+      endDate: String
+      active: Boolean
+    ): OwnChallenge
+    editChallenge(
+      name: String!
+      description: String
+      link: String
+      duration: Int
+      startDate: String
+    ): Challenge
     createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
   }
@@ -73,6 +101,19 @@ const resolvers = {
     allChallenges: async () => {
       return await Challenge.find({});
     },
+    allOwnChallenges: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      console.log('user is: ', currentUser)
+      if (!currentUser) {
+        throw new AuthenticationError("not permitted");
+      }
+
+      let ownChallenges = await OwnChallenge.find({ user: currentUser }).populate('user').populate('challenge')
+
+      console.log('testing... ', ownChallenges)
+      return ownChallenges;
+    },
+
     findChallenge: (root, args) => Challenge.findOne({ name: args.name }),
     me: (root, args, context) => {
       return context.currentUser;
@@ -114,6 +155,28 @@ const resolvers = {
       });
 
       return challenge.save().catch((error) => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      });
+    },
+    createOwnChallenge: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      if (!currentUser) {
+        console.log("testataaaaaan");
+        //  throw new AuthenticationError("not permitted"); TODO: uncomment
+      }
+
+      let challenge = await Challenge.findById(args.challengeID);
+      console.log("challenge ooon: ", challenge);
+      let user = await User.findById(args.userID);
+
+      console.log("user ooon: ", user);
+      const ownChallenge = new OwnChallenge({ ...args, challenge, user, active: true });
+
+      console.log("ghraaah own challenge: ", ownChallenge);
+
+      return ownChallenge.save().catch((error) => {
         throw new UserInputError(error.message, {
           invalidArgs: args,
         });

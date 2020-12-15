@@ -14,7 +14,6 @@ const schema = new mongoose.Schema({
     type: String,
   },
   duration: { type: Number },
-  startDate: { type: String}
 });
 
 module.exports = mongoose.model("Challenge", schema);

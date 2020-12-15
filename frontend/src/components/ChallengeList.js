@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import useChallenges from "../hooks/useChallenges";
+import useOwnChallenges from "../hooks/useOwnChallenges";
 
 const useStyles = makeStyles({
   table: {
@@ -21,32 +22,27 @@ const useStyles = makeStyles({
 const ChallengeList = ({ username }) => {
   const classes = useStyles();
   const challenges = useChallenges();
+  const ownChallenges = useOwnChallenges();
   console.log("challenges: ", challenges);
+  console.log(" own challenges: ", ownChallenges);
   return (
     <div>
       <p>
         Logged in as <b>{username}</b>
       </p>
+      <h2>Ongoing Challenges</h2>
+      <div>
+        test
+      </div>
+
       <h2>Challenges</h2>
-      <div style={{ height: 400, width: "100%" }}>
+      <div>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>
                   <b>Name</b>
-                </TableCell>
-                <TableCell align="right">
-                  <b>Description</b>
-                </TableCell>
-                <TableCell align="right">
-                  <b>Link</b>
-                </TableCell>
-                <TableCell align="right">
-                  <b>Duration (days)</b>
-                </TableCell>
-                <TableCell align="right">
-                  <b>Start Date</b>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -57,10 +53,6 @@ const ChallengeList = ({ username }) => {
                     <TableCell component="th" scope="row">
                       <Link to={`challenges/${challenge.id}`}>{challenge.name}</Link>
                     </TableCell>
-                    <TableCell align="right">{challenge.description}</TableCell>
-                    <TableCell align="right">{challenge.link}</TableCell>
-                    <TableCell align="right">{challenge.duration}</TableCell>
-                    <TableCell align="right">{challenge.startDate}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
