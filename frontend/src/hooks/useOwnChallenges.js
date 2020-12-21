@@ -5,7 +5,7 @@ const useOwnChallenges = () => {
   const { data } = useQuery(ALL_OWN_CHALLENGES, {
     fetchPolicy: "cache-and-network",
   });
-  return data ? data.allChallenges : undefined;
+  return data ? data.allOwnChallenges : undefined;
 };
 
 export default useOwnChallenges;

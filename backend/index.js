@@ -39,6 +39,7 @@ const typeDefs = gql`
     link: String
     duration: Int
     startDate: String
+    active: Boolean
   }
 
   type OwnChallenge {
@@ -98,19 +99,36 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    allChallenges: async () => {
-      return await Challenge.find({});
+    allChallenges: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      const challenges = await Challenge.find({});
+      const ownChallenges = await OwnChallenge.find({ user: currentUser })
+        .populate("user")
+        .populate("challenge");
+      return challenges.map((challenge) => ({
+        id: challenge.id,
+        name: challenge.name,
+        link: challenge.link,
+        description: challenge.description,
+        duration: challenge.duration,
+        active: ownChallenges && ownChallenges.some(
+          (oc) => oc.challenge.id === challenge.id
+        ),
+      }));
     },
+
     allOwnChallenges: async (root, args, context) => {
       const currentUser = context.currentUser;
-      console.log('user is: ', currentUser)
+      console.log("user is: ", currentUser);
       if (!currentUser) {
         throw new AuthenticationError("not permitted");
       }
 
-      let ownChallenges = await OwnChallenge.find({ user: currentUser }).populate('user').populate('challenge')
+      let ownChallenges = await OwnChallenge.find({ user: currentUser })
+        .populate("user")
+        .populate("challenge");
 
-      console.log('testing... ', ownChallenges)
+      console.log("testing... ", ownChallenges);
       return ownChallenges;
     },
 
@@ -168,13 +186,18 @@ const resolvers = {
       }
 
       let challenge = await Challenge.findById(args.challengeID);
-      console.log("challenge ooon: ", challenge);
+      // console.log("challenge ooon: ", challenge);
       let user = await User.findById(args.userID);
 
-      console.log("user ooon: ", user);
-      const ownChallenge = new OwnChallenge({ ...args, challenge, user, active: true });
+      //  console.log("user ooon: ", user);
+      const ownChallenge = new OwnChallenge({
+        ...args,
+        challenge,
+        user,
+        active: true,
+      });
 
-      console.log("ghraaah own challenge: ", ownChallenge);
+      //  console.log("ghraaah own challenge: ", ownChallenge);
 
       return ownChallenge.save().catch((error) => {
         throw new UserInputError(error.message, {

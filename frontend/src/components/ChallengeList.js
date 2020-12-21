@@ -32,13 +32,35 @@ const ChallengeList = ({ username }) => {
       </p>
       <h2>Ongoing Challenges</h2>
       <div>
-        test
+        <div>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="own challenges table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <b>Name</b>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {ownChallenges &&
+                ownChallenges.map((ownChallenge) => (
+                    <TableRow key={ownChallenge.id}>
+                      <TableCell component="th" scope="row">
+                        <Link to={`challenges/${ownChallenge.challenge.id}`}>{ownChallenge.challenge.name}</Link>
+                      </TableCell>
+                    </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
 
-      <h2>Challenges</h2>
+      <h2>All Challenges</h2>
       <div>
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
+          <Table className={classes.table} aria-label="all challenges table">
             <TableHead>
               <TableRow>
                 <TableCell>

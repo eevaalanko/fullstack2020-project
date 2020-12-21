@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ActiveChallengeComponent from "./ActiveChallengeComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,8 +22,8 @@ const ChallengeComponent = ({ challenge }) => {
       <p>{challenge.description}</p>
         <p><a href={challenge.link}>{challenge.link}</a></p>
       <p>Challenge duration: {challenge.duration} days</p>
-      {challenge.startDate ? (
-        <p>Start date: {challenge.startDate}</p>
+      {challenge.active ? (
+        <p><ActiveChallengeComponent/></p>
       ) : (
         <Button variant="outlined" color="primary" onClick={startChallenge}>
           Start the challenge!

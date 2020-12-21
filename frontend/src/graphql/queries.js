@@ -25,7 +25,7 @@ export const ALL_CHALLENGES = gql`
       description
       link
       duration
-      startDate
+      active
     }
   }
 `;
@@ -35,6 +35,7 @@ export const ALL_OWN_CHALLENGES = gql`
     allOwnChallenges {
       id
       challenge {
+        id
         name
       }
       user {

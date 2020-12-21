@@ -8,6 +8,7 @@ import ChallengeList from "./components/ChallengeList";
 import useChallenges from "./hooks/useChallenges";
 import ChallengeComponent from "./components/ChallengeComponent";
 import {makeStyles} from "@material-ui/core/styles";
+import ActiveChallengeComponent from "./components/ActiveChallengeComponent";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,6 +64,9 @@ const App = () => {
         </Route>
         <Route path="/challenges/:id" exact>
           {challenge && <ChallengeComponent challenge={challenge} />}
+        </Route>
+        <Route path="/ownChallenges/:id" exact>
+          {challenge && <ActiveChallengeComponent challenge={challenge} />}
         </Route>
         <Route path="/challenges">
           {user && <ChallengeList username={user.username} />}
