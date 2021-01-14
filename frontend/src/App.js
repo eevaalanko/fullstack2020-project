@@ -63,7 +63,7 @@ const App = () => {
           <LoginComponent setError={setErrorMessage} />
         </Route>
         <Route path="/challenges/:id" exact>
-          {challenge && <ChallengeComponent challenge={challenge} />}
+          {challenge && <ChallengeComponent challenge={challenge} user={user} />}
         </Route>
         <Route path="/ownChallenges/:id" exact>
           {challenge && <ActiveChallengeComponent challenge={challenge} />}

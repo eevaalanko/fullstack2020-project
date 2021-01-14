@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {useApolloClient, useMutation} from "@apollo/client";
 import { useHistory } from "react-router-dom";
-import { LOGIN } from "../graphql/queries";
+import { LOGIN } from "../graphql/mutations";
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ setError }) => {
