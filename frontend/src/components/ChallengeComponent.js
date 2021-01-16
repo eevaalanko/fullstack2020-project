@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useApolloClient, useMutation } from "@apollo/client";
 import ActiveChallengeComponent from "./ActiveChallengeComponent";
 import { CREATE_OWN_CHALLENGE } from "../graphql/mutations";
+import { ALL_CHALLENGES } from "../graphql/queries";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,15 +17,22 @@ const useStyles = makeStyles((theme) => ({
 const ChallengeComponent = ({ challenge, user }) => {
   const classes = useStyles();
   const client = useApolloClient();
-  const [description, setDescription] = useState("testing... ");  // TODO: implement an input
-  const [createChallenge] = useMutation(CREATE_OWN_CHALLENGE);
+  const [description, setDescription] = useState("testing... "); // TODO: implement an input
+  const [createChallenge] = useMutation(CREATE_OWN_CHALLENGE, {
+    refetchQueries: [{ query: ALL_CHALLENGES }],
+    onError: (error) => {
+      console.log("error: ", error);
+      //  setError(error.toString())
+    },
+  });
+
   const startChallenge = () => {
     alert("wheee");
     return createChallenge({
       variables: {
         challengeID: challenge.id,
         userID: user.id,
-        startDate: "01-01-2021",  // TODO: use date now
+        startDate: "01-01-2021", // TODO: use date now
         endDate: "01-02-2121",
         description: description,
       },
