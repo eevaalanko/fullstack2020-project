@@ -5,6 +5,7 @@ import { useApolloClient, useMutation } from "@apollo/client";
 import ActiveChallengeComponent from "./ActiveChallengeComponent";
 import { CREATE_OWN_CHALLENGE } from "../graphql/mutations";
 import { ALL_CHALLENGES } from "../graphql/queries";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChallengeComponent = ({ challenge, user }) => {
+  const startDate = dayjs().format("DD.MM.YYYY");
+  const endDate = dayjs().add(30, "day").format("DD.MM.YYYY");
   const classes = useStyles();
   const client = useApolloClient();
   const [description, setDescription] = useState("testing... "); // TODO: implement an input
@@ -32,8 +35,8 @@ const ChallengeComponent = ({ challenge, user }) => {
       variables: {
         challengeID: challenge.id,
         userID: user.id,
-        startDate: "01-01-2021", // TODO: use date now
-        endDate: "01-02-2121",
+        startDate: startDate,
+        endDate: endDate,
         description: description,
       },
     });
@@ -48,9 +51,7 @@ const ChallengeComponent = ({ challenge, user }) => {
       </p>
       <p>Challenge duration: {challenge.duration} days</p>
       {challenge.active ? (
-        <p>
-          <ActiveChallengeComponent />
-        </p>
+        <ActiveChallengeComponent challenge={challenge} />
       ) : (
         <Button variant="outlined" color="primary" onClick={startChallenge}>
           Start the challenge!
