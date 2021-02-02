@@ -39,7 +39,7 @@ const typeDefs = gql`
     link: String
     duration: Int
     startDate: String
-    active: Boolean
+    activeChallenge: OwnChallenge
   }
 
   type OwnChallenge {
@@ -51,6 +51,7 @@ const typeDefs = gql`
     startDate: String
     endDate: String
     active: Boolean
+    entries: [Boolean]
   }
 
   type User {
@@ -85,6 +86,10 @@ const typeDefs = gql`
       endDate: String
       active: Boolean
     ): OwnChallenge
+    editEntry(
+      id: String
+      entry: Int
+    ): OwnChallenge
     editChallenge(
       name: String!
       description: String
@@ -111,9 +116,11 @@ const resolvers = {
         link: challenge.link,
         description: challenge.description,
         duration: challenge.duration,
-        active: ownChallenges && ownChallenges.some(
-          (oc) => oc.challenge.id === challenge.id
-        ),
+        activeChallenge:
+          ownChallenges &&
+          ownChallenges.find(
+            (oc) => oc.challenge.id === challenge.id && oc.active
+          ),
       }));
     },
 
@@ -189,12 +196,15 @@ const resolvers = {
       // console.log("challenge ooon: ", challenge);
       let user = await User.findById(args.userID);
 
+      const entryArray = new Array(30).fill(false);
+
       //  console.log("user ooon: ", user);
       const ownChallenge = new OwnChallenge({
         ...args,
         challenge,
         user,
         active: true,
+        entries: entryArray,
       });
 
       //  console.log("ghraaah own challenge: ", ownChallenge);

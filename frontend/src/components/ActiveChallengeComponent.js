@@ -1,15 +1,9 @@
-import React from "react";
-import {
-  makeStyles,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-} from "@material-ui/core";
+import React, { useState } from "react";
+import { makeStyles, Icon } from "@material-ui/core";
+import { Calendar } from "react-calendar";
+import { Check, Close } from "@material-ui/icons";
+import "react-calendar/dist/Calendar.css";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,50 +11,54 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     marginBottom: 1,
   },
+  checkedIcon: {
+    fill: "green",
+    fontSize: "1rem",
+  },
+  uncheckedIcon: {
+    fill: "red",
+    fontSize: "1rem",
+  },
 }));
 
 const ActiveChallengeComponent = ({ challenge }) => {
   const classes = useStyles();
+  const [value, setValue] = useState(new Date());
+  const [checked, setChecked] = useState(false);
+
+  console.log("calendar value: ", value);
+
+  console.log("act challll:    ", challenge);
+  console.log("end date:    ", new Date(challenge.endDate));
+  console.log("start date:    ", new Date(challenge.startDate));
+
+  console.log("checked: ", checked);
+
+  const openCalendar = (value) => {
+    console.log("value", value);
+    setValue(value);
+    setChecked(!checked);
+  };
 
   return (
     <div>
-      <p>testing. this is an active challenge.</p>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="own challenges table">
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <b>Day</b>
-              </TableCell>
-              <TableCell>
-                <b>Date</b>
-              </TableCell>
-              <TableCell>
-                <b>Done</b>
-              </TableCell>
-              <TableCell>
-                <b>Time</b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    1
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    1.1.2021
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    true
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    10 min
-                  </TableCell>
-                </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <p>Started: {dayjs(challenge.startDate).format("DD.MM.YYYY")}</p>
+      <p>Ending: {dayjs(challenge.endDate).format("DD.MM.YYYY")}</p>
+      <p>Click day on calendar to mark as done.</p>
+      <Calendar
+        onChange={openCalendar}
+        value={value}
+        minDate={new Date(challenge.startDate)}
+        maxDate={new Date()}
+        allowPartialRange={true}
+        tileContent={
+          checked ? (
+            <Check className={classes.checkedIcon} />
+          ) : (
+            <Close className={classes.uncheckedIcon} />
+          )
+        }
+      />
     </div>
   );
 };

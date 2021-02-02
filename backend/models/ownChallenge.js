@@ -13,6 +13,9 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  entries: [
+    { type: Boolean}
+  ]
 });
 
 module.exports = mongoose.model("OwnChallenge", schema);

@@ -17,7 +17,14 @@ export const ALL_CHALLENGES = gql`
       description
       link
       duration
-      active
+      activeChallenge {
+        id
+        description
+        startDate
+        endDate
+        active
+        entries
+      }
     }
   }
 `;
@@ -37,6 +44,7 @@ export const ALL_OWN_CHALLENGES = gql`
       startDate
       endDate
       active
+      entries
     }
   }
 `;

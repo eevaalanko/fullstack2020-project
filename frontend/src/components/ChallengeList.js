@@ -30,9 +30,9 @@ const ChallengeList = ({ username }) => {
       <p>
         Logged in as <b>{username}</b>
       </p>
-      <h2>Ongoing Challenges</h2>
-      <div>
+      {ownChallenges && (
         <div>
+          <h2>Ongoing Challenges</h2>
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="own challenges table">
               <TableHead>
@@ -43,19 +43,20 @@ const ChallengeList = ({ username }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {ownChallenges &&
-                ownChallenges.map((ownChallenge) => (
-                    <TableRow key={ownChallenge.id}>
-                      <TableCell component="th" scope="row">
-                        <Link to={`challenges/${ownChallenge.challenge.id}`}>{ownChallenge.challenge.name}</Link>
-                      </TableCell>
-                    </TableRow>
+                {ownChallenges.map((ownChallenge) => (
+                  <TableRow key={ownChallenge.id}>
+                    <TableCell component="th" scope="row">
+                      <Link to={`challenges/${ownChallenge.challenge.id}`}>
+                        {ownChallenge.challenge.name}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </div>
-      </div>
+      )}
 
       <h2>All Challenges</h2>
       <div>
@@ -73,7 +74,9 @@ const ChallengeList = ({ username }) => {
                 challenges.map((challenge) => (
                   <TableRow key={challenge.id}>
                     <TableCell component="th" scope="row">
-                      <Link to={`challenges/${challenge.id}`}>{challenge.name}</Link>
+                      <Link to={`challenges/${challenge.id}`}>
+                        {challenge.name}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

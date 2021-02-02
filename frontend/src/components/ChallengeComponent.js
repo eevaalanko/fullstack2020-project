@@ -16,10 +16,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChallengeComponent = ({ challenge, user }) => {
-  const startDate = dayjs().format("DD.MM.YYYY");
-  const endDate = dayjs().add(30, "day").format("DD.MM.YYYY");
+  const startDate = dayjs()
+
+  const endDate = dayjs().add(30, "day")
+      // .format("DD.MM.YYYY");
   const classes = useStyles();
   const client = useApolloClient();
+  // const ownChallenge =
   const [description, setDescription] = useState("testing... "); // TODO: implement an input
   const [createChallenge] = useMutation(CREATE_OWN_CHALLENGE, {
     refetchQueries: [{ query: ALL_CHALLENGES }],
@@ -47,11 +50,11 @@ const ChallengeComponent = ({ challenge, user }) => {
       <h1>{challenge.name}</h1>
       <p>{challenge.description}</p>
       <p>
-        <a href={challenge.link}>{challenge.link}</a>
+        <a href={challenge.link} target="_blank">{challenge.link}</a>
       </p>
       <p>Challenge duration: {challenge.duration} days</p>
-      {challenge.active ? (
-        <ActiveChallengeComponent challenge={challenge} />
+      {challenge.activeChallenge ? (
+        <ActiveChallengeComponent challenge={challenge.activeChallenge} />
       ) : (
         <Button variant="outlined" color="primary" onClick={startChallenge}>
           Start the challenge!
