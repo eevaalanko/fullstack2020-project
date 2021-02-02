@@ -49,7 +49,7 @@ const ActiveChallengeComponent = ({ challenge }) => {
         onChange={openCalendar}
         value={value}
         minDate={new Date(challenge.startDate)}
-        maxDate={new Date()}
+        maxDate={new Date(challenge.endDate)}
         allowPartialRange={true}
         tileContent={
           checked ? (

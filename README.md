@@ -3,9 +3,17 @@
 
 - https://courses.helsinki.fi/en/aytkt21010/133171831
 
-Challenge App is an application where you can register your monthly sport challenges. \
+Challenge App is an application where you can register your sport challenges. \
 This app has been implemented with React, Node and GraphQl. \
-It uses Atlas MongoDB. 
+It uses Atlas MongoDB. \
+
+## Further development possibilities
+
+- share and compare your results with friends
+- add additional information to active challenges
+- create your own challenges
+
+
 
 
 
