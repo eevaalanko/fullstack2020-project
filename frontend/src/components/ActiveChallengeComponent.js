@@ -4,6 +4,9 @@ import { Calendar } from "react-calendar";
 import { Check, Close } from "@material-ui/icons";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
+import { useMutation } from "@apollo/client";
+import { EDIT_OWN_CHALLENGE } from "../graphql/mutations";
+import { ALL_OWN_CHALLENGES } from "../graphql/queries";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,21 +26,25 @@ const useStyles = makeStyles((theme) => ({
 
 const ActiveChallengeComponent = ({ challenge }) => {
   const classes = useStyles();
-  const [value, setValue] = useState(new Date());
-  const [checked, setChecked] = useState(false);
+  const [value, setValue] = useState(null);
+  const entries = challenge.entries;
+  const [editChallenge] = useMutation(EDIT_OWN_CHALLENGE, {
+    refetchQueries: [{ query: ALL_OWN_CHALLENGES }],
+    onError: (error) => {
+      console.log("error: ", error);
+      //  setError(error.toString())
+    },
+  });
+  const setEntry = (e) => {
+    // alert("wheee");
+    setValue(e)
+    return editChallenge({
+      variables: {
+        challengeID: challenge.id,
+        entry: dayjs(e).format("YYYY-MM-DD"),
+      },
+    });
 
-  console.log("calendar value: ", value);
-
-  console.log("act challll:    ", challenge);
-  console.log("end date:    ", new Date(challenge.endDate));
-  console.log("start date:    ", new Date(challenge.startDate));
-
-  console.log("checked: ", checked);
-
-  const openCalendar = (value) => {
-    console.log("value", value);
-    setValue(value);
-    setChecked(!checked);
   };
 
   return (
@@ -46,13 +53,17 @@ const ActiveChallengeComponent = ({ challenge }) => {
       <p>Ending: {dayjs(challenge.endDate).format("DD.MM.YYYY")}</p>
       <p>Click day on calendar to mark as done.</p>
       <Calendar
-        onChange={openCalendar}
+        onChange={setEntry}
         value={value}
         minDate={new Date(challenge.startDate)}
         maxDate={new Date(challenge.endDate)}
         allowPartialRange={true}
-        tileContent={
-          checked ? (
+        tileContent={({ activeStartDate, date, view }) =>
+          date < dayjs(dayjs(challenge.startDate).format("YYYY-MM-DD")) ||
+          date >
+            dayjs(
+              dayjs(challenge.endDate).format("YYYY-MM-DD")
+            ) ? null : entries.includes(dayjs(date).format("YYYY-MM-DD")) ? (
             <Check className={classes.checkedIcon} />
           ) : (
             <Close className={classes.uncheckedIcon} />

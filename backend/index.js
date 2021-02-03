@@ -51,7 +51,7 @@ const typeDefs = gql`
     startDate: String
     endDate: String
     active: Boolean
-    entries: [Boolean]
+    entries: [String]
   }
 
   type User {
@@ -86,10 +86,7 @@ const typeDefs = gql`
       endDate: String
       active: Boolean
     ): OwnChallenge
-    editEntry(
-      id: String
-      entry: Int
-    ): OwnChallenge
+    editOwnChallenge(id: String, entry: String): OwnChallenge
     editChallenge(
       name: String!
       description: String
@@ -185,30 +182,44 @@ const resolvers = {
         });
       });
     },
+    editOwnChallenge: async (root, args) => {
+      if (!args.entry) {
+        throw new UserInputError("Missing entry");
+      }
+      const ownChallenge = await OwnChallenge.findOne({ _id: args.id });
+      if (!ownChallenge) {
+        throw new UserInputError("Own challenge not found");
+      }
+      if (ownChallenge.entries.includes(args.entry)) {
+        ownChallenge.entries = ownChallenge.entries.filter(
+            (e) => e !== args.entry
+        );
+      } else {
+        ownChallenge.entries.push(args.entry);
+      }
+      try {
+        await ownChallenge.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+      return ownChallenge;
+    },
     createOwnChallenge: async (root, args, context) => {
       const currentUser = context.currentUser;
       if (!currentUser) {
-        console.log("testataaaaaan");
-        //  throw new AuthenticationError("not permitted"); TODO: uncomment
+        throw new AuthenticationError("not permitted");
       }
-
       let challenge = await Challenge.findById(args.challengeID);
-      // console.log("challenge ooon: ", challenge);
       let user = await User.findById(args.userID);
-
-      const entryArray = new Array(30).fill(false);
-
-      //  console.log("user ooon: ", user);
       const ownChallenge = new OwnChallenge({
         ...args,
         challenge,
         user,
         active: true,
-        entries: entryArray,
+        entries: [],
       });
-
-      //  console.log("ghraaah own challenge: ", ownChallenge);
-
       return ownChallenge.save().catch((error) => {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -230,7 +241,7 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
-      if (!user || args.password !== "secret") {
+      if (!user || args.password !== "secret") {  // todo: set other passwords...
         throw new UserInputError("wrong credentials");
       }
 

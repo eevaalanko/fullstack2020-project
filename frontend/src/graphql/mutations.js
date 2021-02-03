@@ -8,6 +8,15 @@ export const LOGIN = gql`
   }
 `;
 
+export const EDIT_OWN_CHALLENGE = gql`
+  mutation editOwnChallenge($challengeID: String!, $entry: String!) {
+    editOwnChallenge(id: $challengeID, entry: $entry) {
+      id
+      entries
+    }
+  }
+`;
+
 export const CREATE_OWN_CHALLENGE = gql`
   mutation createOwnChallenge($challengeID: String!,
    $userID: String!, $description: String, $startDate: String, $endDate: String) {

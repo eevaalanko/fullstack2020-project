@@ -17,12 +17,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ChallengeComponent = ({ challenge, user }) => {
   const startDate = dayjs()
-
   const endDate = dayjs().add(30, "day")
-      // .format("DD.MM.YYYY");
   const classes = useStyles();
   const client = useApolloClient();
-  // const ownChallenge =
   const [description, setDescription] = useState("testing... "); // TODO: implement an input
   const [createChallenge] = useMutation(CREATE_OWN_CHALLENGE, {
     refetchQueries: [{ query: ALL_CHALLENGES }],

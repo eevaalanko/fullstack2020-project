@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
     ref: "User",
   },
   entries: [
-    { type: Boolean}
+    { type: String}
   ]
 });
 
