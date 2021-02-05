@@ -7,11 +7,18 @@ Challenge App is an application where you can register your sport challenges. \
 This app has been implemented with React, Node and GraphQl. \
 It uses Atlas MongoDB. \
 
+(link to Heroku)
+
+#### test user: 
+user name: "user" password: "secret"
+
 ## Further development possibilities
 
 - share and compare your results with friends
 - add additional information to active challenges
+- list and compare own finished challenges
 - create your own challenges
+
 
 
 

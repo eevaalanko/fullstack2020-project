@@ -17,7 +17,7 @@ export const ALL_CHALLENGES = gql`
       description
       link
       duration
-      activeChallenge {
+      ownChallenges {
         id
         description
         startDate

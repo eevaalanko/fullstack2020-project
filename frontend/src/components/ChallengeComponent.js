@@ -6,6 +6,7 @@ import ActiveChallengeComponent from "./ActiveChallengeComponent";
 import { CREATE_OWN_CHALLENGE } from "../graphql/mutations";
 import { ALL_CHALLENGES } from "../graphql/queries";
 import dayjs from "dayjs";
+import CompletedChallengeComponent from "./CompletedChallengeComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,10 +17,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChallengeComponent = ({ challenge, user }) => {
-  const startDate = dayjs()
-  const endDate = dayjs().add(30, "day")
+  console.log("this challenge is:   ", challenge);
+  const startDate = dayjs().format("YYYY-MM-DD");
+  const endDate = dayjs().add(challenge.duration, "day").format("YYYY-MM-DD");
   const classes = useStyles();
   const client = useApolloClient();
+  const activeChallenge = challenge.ownChallenges.find((c) => c.active);
+  const passiveChallenge =
+    challenge.ownChallenges.length > 0 &&
+    !activeChallenge &&
+    challenge.ownChallenges[challenge.ownChallenges.length - 1];
   const [description, setDescription] = useState("testing... "); // TODO: implement an input
   const [createChallenge] = useMutation(CREATE_OWN_CHALLENGE, {
     refetchQueries: [{ query: ALL_CHALLENGES }],
@@ -47,15 +54,25 @@ const ChallengeComponent = ({ challenge, user }) => {
       <h1>{challenge.name}</h1>
       <p>{challenge.description}</p>
       <p>
-        <a href={challenge.link} target="_blank">{challenge.link}</a>
+        <a href={challenge.link} target="_blank">
+          {challenge.link}
+        </a>
       </p>
       <p>Challenge duration: {challenge.duration} days</p>
-      {challenge.activeChallenge ? (
-        <ActiveChallengeComponent challenge={challenge.activeChallenge} />
+      {activeChallenge ? (
+        <ActiveChallengeComponent challenge={activeChallenge} />
       ) : (
-        <Button variant="outlined" color="primary" onClick={startChallenge}>
-          Start the challenge!
-        </Button>
+        <div>
+          {passiveChallenge && (
+            <CompletedChallengeComponent challenge={passiveChallenge} />
+          )}
+          <br />
+          <Button variant="outlined" color="primary" onClick={startChallenge}>
+            {passiveChallenge
+              ? "Restart the challenge!"
+              : "Start the challenge!"}
+          </Button>
+        </div>
       )}
     </div>
   );

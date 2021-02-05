@@ -35,18 +35,17 @@ const ActiveChallengeComponent = ({ challenge }) => {
       //  setError(error.toString())
     },
   });
+  console.log("own chall: ", challenge);
   const setEntry = (e) => {
     // alert("wheee");
-    setValue(e)
+    setValue(e);
     return editChallenge({
       variables: {
         challengeID: challenge.id,
         entry: dayjs(e).format("YYYY-MM-DD"),
       },
     });
-
   };
-
   return (
     <div>
       <p>Started: {dayjs(challenge.startDate).format("DD.MM.YYYY")}</p>
@@ -58,12 +57,11 @@ const ActiveChallengeComponent = ({ challenge }) => {
         minDate={new Date(challenge.startDate)}
         maxDate={new Date(challenge.endDate)}
         allowPartialRange={true}
-        tileContent={({ activeStartDate, date, view }) =>
-          date < dayjs(dayjs(challenge.startDate).format("YYYY-MM-DD")) ||
-          date >
-            dayjs(
-              dayjs(challenge.endDate).format("YYYY-MM-DD")
-            ) ? null : entries.includes(dayjs(date).format("YYYY-MM-DD")) ? (
+        tileContent={({ date }) =>
+          date < dayjs(challenge.startDate) ||
+          date > dayjs(challenge.endDate) ? null : entries.includes(
+              dayjs(date).format("YYYY-MM-DD")
+            ) ? (
             <Check className={classes.checkedIcon} />
           ) : (
             <Close className={classes.uncheckedIcon} />

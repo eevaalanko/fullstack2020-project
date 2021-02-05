@@ -38,8 +38,7 @@ const typeDefs = gql`
     description: String
     link: String
     duration: Int
-    startDate: String
-    activeChallenge: OwnChallenge
+    ownChallenges: [OwnChallenge]
   }
 
   type OwnChallenge {
@@ -76,7 +75,6 @@ const typeDefs = gql`
       description: String
       link: String
       duration: Int
-      startDate: String
     ): Challenge
     createOwnChallenge(
       userID: String
@@ -107,17 +105,19 @@ const resolvers = {
       const ownChallenges = await OwnChallenge.find({ user: currentUser })
         .populate("user")
         .populate("challenge");
+
+      console.log("own challllll: ", ownChallenges);
+
+      console.log("challenges: ", challenges);
       return challenges.map((challenge) => ({
         id: challenge.id,
         name: challenge.name,
         link: challenge.link,
         description: challenge.description,
         duration: challenge.duration,
-        activeChallenge:
-          ownChallenges &&
-          ownChallenges.find(
-            (oc) => oc.challenge.id === challenge.id && oc.active
-          ),
+        ownChallenges: ownChallenges.filter(
+          (oc) => oc.challenge.id === challenge.id
+        ),
       }));
     },
 
@@ -186,13 +186,13 @@ const resolvers = {
       if (!args.entry) {
         throw new UserInputError("Missing entry");
       }
-      const ownChallenge = await OwnChallenge.findOne({ _id: args.id });
+      const ownChallenge = await OwnChallenge.findById(args.id);
       if (!ownChallenge) {
         throw new UserInputError("Own challenge not found");
       }
       if (ownChallenge.entries.includes(args.entry)) {
         ownChallenge.entries = ownChallenge.entries.filter(
-            (e) => e !== args.entry
+          (e) => e !== args.entry
         );
       } else {
         ownChallenge.entries.push(args.entry);
@@ -241,7 +241,8 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
-      if (!user || args.password !== "secret") {  // todo: set other passwords...
+      if (!user || args.password !== "secret") {
+        // todo: set other passwords...
         throw new UserInputError("wrong credentials");
       }
 
