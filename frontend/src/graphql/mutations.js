@@ -17,6 +17,16 @@ export const EDIT_OWN_CHALLENGE = gql`
   }
 `;
 
+export const STOP_OWN_CHALLENGE = gql`
+  mutation editOwnChallenge($challengeID: String!) {
+    editOwnChallenge(id: $challengeID, stop: true) {
+      id
+      entries
+      active
+    }
+  }
+`;
+
 export const CREATE_OWN_CHALLENGE = gql`
   mutation createOwnChallenge($challengeID: String!,
    $userID: String!, $description: String, $startDate: String, $endDate: String) {

@@ -6,7 +6,7 @@ import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import { useMutation } from "@apollo/client";
 import { EDIT_OWN_CHALLENGE } from "../graphql/mutations";
-import { ALL_OWN_CHALLENGES } from "../graphql/queries";
+import { ACTIVE_OWN_CHALLENGES } from "../graphql/queries";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ const ActiveChallengeComponent = ({ challenge }) => {
   const [value, setValue] = useState(null);
   const entries = challenge.entries;
   const [editChallenge] = useMutation(EDIT_OWN_CHALLENGE, {
-    refetchQueries: [{ query: ALL_OWN_CHALLENGES }],
+    refetchQueries: [{ query: ACTIVE_OWN_CHALLENGES }],
     onError: (error) => {
       console.log("error: ", error);
       //  setError(error.toString())

@@ -3,8 +3,8 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useApolloClient, useMutation } from "@apollo/client";
 import ActiveChallengeComponent from "./ActiveChallengeComponent";
-import { CREATE_OWN_CHALLENGE } from "../graphql/mutations";
-import { ALL_CHALLENGES } from "../graphql/queries";
+import { CREATE_OWN_CHALLENGE, STOP_OWN_CHALLENGE } from "../graphql/mutations";
+import { ALL_CHALLENGES, ACTIVE_OWN_CHALLENGES } from "../graphql/queries";
 import dayjs from "dayjs";
 import CompletedChallengeComponent from "./CompletedChallengeComponent";
 
@@ -18,11 +18,26 @@ const useStyles = makeStyles((theme) => ({
 
 const ChallengeComponent = ({ challenge, user }) => {
   console.log("this challenge is:   ", challenge);
-  const startDate = dayjs().format("YYYY-MM-DD");
-  const endDate = dayjs().add(challenge.duration, "day").format("YYYY-MM-DD");
+  const today = dayjs();
+  const endDate = dayjs().add(challenge.duration, "day");
   const classes = useStyles();
-  const client = useApolloClient();
+  const [stopChallenge] = useMutation(STOP_OWN_CHALLENGE, {
+    refetchQueries: [{ query: ACTIVE_OWN_CHALLENGES }],
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+  });
   const activeChallenge = challenge.ownChallenges.find((c) => c.active);
+  const checkDate = () => {
+    if (activeChallenge && today > endDate) {
+      return stopChallenge({
+        variables: {
+          challengeID: activeChallenge.id,
+        },
+      });
+    }
+  };
+  checkDate();
   const passiveChallenge =
     challenge.ownChallenges.length > 0 &&
     !activeChallenge &&
@@ -42,8 +57,8 @@ const ChallengeComponent = ({ challenge, user }) => {
       variables: {
         challengeID: challenge.id,
         userID: user.id,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: today.format("YYYY-MM-DD"),
+        endDate: endDate.format("YYYY-MM-DD"),
         description: description,
       },
     });

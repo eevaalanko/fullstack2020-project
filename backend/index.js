@@ -66,6 +66,7 @@ const typeDefs = gql`
     me: User
     allChallenges: [Challenge!]!
     allOwnChallenges: [OwnChallenge]
+    activeOwnChallenges: [OwnChallenge]
     findChallenge(name: String!): Challenge
     activeChallenges: [Challenge]
   }
@@ -84,7 +85,7 @@ const typeDefs = gql`
       endDate: String
       active: Boolean
     ): OwnChallenge
-    editOwnChallenge(id: String, entry: String): OwnChallenge
+    editOwnChallenge(id: String, entry: String, stop: Boolean): OwnChallenge
     editChallenge(
       name: String!
       description: String
@@ -106,9 +107,6 @@ const resolvers = {
         .populate("user")
         .populate("challenge");
 
-      console.log("own challllll: ", ownChallenges);
-
-      console.log("challenges: ", challenges);
       return challenges.map((challenge) => ({
         id: challenge.id,
         name: challenge.name,
@@ -131,11 +129,22 @@ const resolvers = {
       let ownChallenges = await OwnChallenge.find({ user: currentUser })
         .populate("user")
         .populate("challenge");
-
-      console.log("testing... ", ownChallenges);
       return ownChallenges;
     },
 
+    activeOwnChallenges: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      console.log("user is: ", currentUser);
+      if (!currentUser) {
+        throw new AuthenticationError("not permitted");
+      }
+
+      let ownChallenges = await OwnChallenge.find({ user: currentUser })
+        .populate("user")
+        .populate("challenge");
+
+      return ownChallenges.filter((oc) => oc.active === true);
+    },
     findChallenge: (root, args) => Challenge.findOne({ name: args.name }),
     me: (root, args, context) => {
       return context.currentUser;
@@ -183,19 +192,23 @@ const resolvers = {
       });
     },
     editOwnChallenge: async (root, args) => {
-      if (!args.entry) {
-        throw new UserInputError("Missing entry");
-      }
+      console.log("argggs: ", args);
       const ownChallenge = await OwnChallenge.findById(args.id);
       if (!ownChallenge) {
         throw new UserInputError("Own challenge not found");
       }
-      if (ownChallenge.entries.includes(args.entry)) {
-        ownChallenge.entries = ownChallenge.entries.filter(
-          (e) => e !== args.entry
-        );
-      } else {
-        ownChallenge.entries.push(args.entry);
+      if (args.entry) {
+        if (ownChallenge.entries.includes(args.entry)) {
+          ownChallenge.entries = ownChallenge.entries.filter(
+            (e) => e !== args.entry
+          );
+        } else {
+          ownChallenge.entries.push(args.entry);
+        }
+      }
+      if (args.stop) {
+        console.log("enjaksaenäää: ", args.stop);
+        ownChallenge.active = false;
       }
       try {
         await ownChallenge.save();

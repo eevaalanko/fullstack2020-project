@@ -29,9 +29,9 @@ export const ALL_CHALLENGES = gql`
   }
 `;
 
-export const ALL_OWN_CHALLENGES = gql`
+export const ACTIVE_OWN_CHALLENGES = gql`
   query {
-    allOwnChallenges {
+    activeOwnChallenges {
       id
       challenge {
         id

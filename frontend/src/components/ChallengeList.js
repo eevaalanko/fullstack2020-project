@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import useChallenges from "../hooks/useChallenges";
-import useOwnChallenges from "../hooks/useOwnChallenges";
+import useActiveOwnChallenges from "../hooks/useOwnChallenges";
 
 const useStyles = makeStyles({
   table: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 const ChallengeList = ({ username }) => {
   const classes = useStyles();
   const challenges = useChallenges();
-  const ownChallenges = useOwnChallenges();
+  const ownChallenges = useActiveOwnChallenges();
   console.log("challenges: ", challenges);
   console.log(" own challenges: ", ownChallenges);
   return (
@@ -30,7 +30,7 @@ const ChallengeList = ({ username }) => {
       <p>
         Logged in as <b>{username}</b>
       </p>
-      {ownChallenges && (
+      {ownChallenges && ownChallenges.length > 0 && (
         <div>
           <h2>Ongoing Challenges</h2>
           <TableContainer component={Paper}>
