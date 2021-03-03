@@ -18,10 +18,10 @@
 |02.02.|6|calendar fixes|
 |03.02.|8|fix calendar entries functionality|
 |05.02.|8|implement completed challenges component|
-|03.03.|8||
+|03.03.|8|implement challenge ending|
 ||||
 
 
-#### Total: 110 hours
+#### Total: 118 hours
 
                                                                 
