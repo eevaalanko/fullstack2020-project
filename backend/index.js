@@ -14,7 +14,12 @@ const Challenge = require("./models/challenge");
 const OwnChallenge = require("./models/ownChallenge");
 const User = require("./models/user");
 
-const MONGODB_URI = process.env.MONGODB_URI;
+let MONGODB_URI = process.env.MONGODB_URI;
+
+if (process.env.NODE_ENV === "test") {
+  MONGODB_URI = process.env.TEST_MONGODB_URI;
+}
+
 console.log("connecting to", MONGODB_URI);
 
 mongoose
