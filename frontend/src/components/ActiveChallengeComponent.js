@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, Icon } from "@material-ui/core";
+import { makeStyles} from "@material-ui/core";
 import { Calendar } from "react-calendar";
 import { Check, Close } from "@material-ui/icons";
 import "react-calendar/dist/Calendar.css";

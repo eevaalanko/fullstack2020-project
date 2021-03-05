@@ -1,4 +1,4 @@
-### Working Hours Time Table 17.11.2020 - 3.3.2021
+### Working Hours Time Table 17.11.2020 - 5.3.2021
 
 |Date  |Hours|Done                                                     |
 |:----:|:---:|---------------------------------------------------------|
@@ -20,8 +20,9 @@
 |05.02.|8|implement completed challenges component|
 |03.03.|8|implement challenge ending|
 |04.03.|6|implemented cypress tests POC|
+|05.03.|8|updated cypress tests|
 
 
-#### Total: 118 hours
+#### Total: 126 hours
 
                                                                 

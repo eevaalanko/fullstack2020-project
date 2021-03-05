@@ -68,6 +68,17 @@ describe("Challenge app", function () {
   });
   it("contains All Challenges list", function () {
     cy.contains("All Challenges");
+    cy.contains("test challenge");
     cy.findByText("Ongoing Challenges").should('not.exist');
+  });
+  it("contains Challenges page", function () {
+    cy.findByRole("link", { name: /test challenge/i }).click();
+    cy.contains("test challenge");
+    cy.contains("test description");
+    cy.contains("test link");
+    cy.contains("Challenge duration: 1 days");
+  });
+  it("challenge can be started", function () {
+    cy.findByRole("button", { name: /START THE CHALLENGE!/i }).click();  // TODO: add bearer token
   });
 });
