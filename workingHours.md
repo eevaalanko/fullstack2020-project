@@ -20,9 +20,9 @@
 |05.02.|8|implement completed challenges component|
 |03.03.|8|implement challenge ending|
 |04.03.|6|implemented cypress tests POC|
-|05.03.|8|updated cypress tests|
+|05.03.|8|updated cypress tests, implement abort challenge feature|
 
 
-#### Total: 126 hours
+#### Total: 150 hours
 
                                                                 

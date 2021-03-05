@@ -6,7 +6,6 @@ const {
   gql,
 } = require("apollo-server");
 const { PubSub } = require("apollo-server");
-const pubsub = new PubSub();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "NEED_HERE_A_SECRET_KEY";
@@ -54,6 +53,7 @@ const typeDefs = gql`
     duration: Int
     startDate: String
     endDate: String
+    abortDate: String
     active: Boolean
     entries: [String]
   }
@@ -91,7 +91,12 @@ const typeDefs = gql`
       endDate: String
       active: Boolean
     ): OwnChallenge
-    editOwnChallenge(id: String, entry: String, stop: Boolean): OwnChallenge
+    editOwnChallenge(
+      id: String
+      entry: String
+      stop: Boolean
+      abortDate: String
+    ): OwnChallenge
     editChallenge(
       name: String!
       description: String
@@ -131,10 +136,9 @@ const resolvers = {
         throw new AuthenticationError("not permitted");
       }
 
-      let ownChallenges = await OwnChallenge.find({ user: currentUser })
-        .populate("user")
-        .populate("challenge");
-      return ownChallenges;
+      return OwnChallenge.find({user: currentUser})
+          .populate("user")
+          .populate("challenge");
     },
 
     activeOwnChallenges: async (root, args, context) => {
@@ -210,8 +214,10 @@ const resolvers = {
         }
       }
       if (args.stop) {
-        console.log("enjaksaenäää: ", args.stop);
         ownChallenge.active = false;
+      }
+      if (args.abortDate) {
+        ownChallenge.abortDate = args.abortDate;
       }
       try {
         await ownChallenge.save();
@@ -245,7 +251,7 @@ const resolvers = {
     createUser: (root, args) => {
       const user = new User({
         username: args.username,
-        password: args.password
+        password: args.password,
       });
 
       return user.save().catch((error) => {
@@ -277,9 +283,7 @@ const server = new ApolloServer({
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith("bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
-      const currentUser = await User.findById(decodedToken.id).populate(
-        "friends"
-      );
+      const currentUser = await User.findById(decodedToken.id)
       return { currentUser };
     }
   },

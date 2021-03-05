@@ -1,14 +1,24 @@
 import React from "react";
 import dayjs from "dayjs";
 
-const CompletedChallengeComponent = ({ challenge }) => {
-    return (
+const CompletedChallengeComponent = ({ challenge, duration }) => {
+  return (
     <div>
       <p>
-        You finished the challenge{" "}
-        {dayjs(challenge.endDate).format("DD.MM.YYYY")}!
+        {`Challenge time: ${dayjs(challenge.startDate).format(
+          "DD.MM.YYYY"
+        )} - ${dayjs(challenge.endDate).format("DD.MM.YYYY")}`}
       </p>
-      Results:{challenge.entries.length} days done.
+      {challenge.abortDate ? (
+        <p>
+          {`Challenge was aborted ${dayjs(challenge.abortDate).format(
+            "DD.MM.YYYY"
+          )}.`}
+        </p>
+      ) : (
+        <p>You finished the challenge!</p>
+      )}
+      <p>{`Results: ${challenge.entries.length}/${duration} days done`}</p>
     </div>
   );
 };

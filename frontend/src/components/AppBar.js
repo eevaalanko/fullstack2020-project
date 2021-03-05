@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppBarComponent = ({ user }) => {
-  console.log("app bar user: ", user);
   const classes = useStyles();
   let history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);

@@ -9,6 +9,7 @@ const schema = new mongoose.Schema({
   startDate: { type: String },
   endDate: { type: String },
   active: { type: Boolean },
+  abortDate: { type: String },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

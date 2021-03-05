@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Calendar } from "react-calendar";
 import { Check, Close } from "@material-ui/icons";
 import "react-calendar/dist/Calendar.css";
@@ -48,12 +48,15 @@ const ActiveChallengeComponent = ({ challenge }) => {
     <div>
       <p>Started: {dayjs(challenge.startDate).format("DD.MM.YYYY")}</p>
       <p>Ending: {dayjs(challenge.endDate).format("DD.MM.YYYY")}</p>
-      <p>Click day on calendar to mark as done.</p>
+      <p>
+        Click a day on calendar to mark as done. <br />
+        You can edit past challenge days but you cannot alter future days in advance.
+      </p>
       <Calendar
         onChange={setEntry}
         value={value}
         minDate={new Date(challenge.startDate)}
-        maxDate={new Date(challenge.endDate)}
+        maxDate={new Date()}
         allowPartialRange={true}
         tileContent={({ date }) =>
           date < dayjs(challenge.startDate) ||

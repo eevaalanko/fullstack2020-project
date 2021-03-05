@@ -20,6 +20,7 @@ user name: "user" password: "secret"
 - add additional information to active challenges
 - list and compare own finished challenges
 - create your own challenges
+- implement jest tests and more cypress tests
 
 
 

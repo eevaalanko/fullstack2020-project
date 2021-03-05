@@ -27,15 +27,24 @@ const ChallengeComponent = ({ challenge, user }) => {
     },
   });
   const activeChallenge = challenge.ownChallenges.find((c) => c.active);
-  const checkDate = () => {
-    if (activeChallenge && today > endDate) {
-      return stopChallenge({
-        variables: {
-          challengeID: activeChallenge.id,
-        },
-      });
-    }
+
+  const abortChallenge = () => {
+    return stopChallenge({
+      variables: {
+        challengeID: activeChallenge.id,
+        abortDate: today.format("YYYY-MM-DD"),
+      },
+    });
   };
+
+  const checkDate = () =>
+    activeChallenge &&
+    today > endDate &&
+    stopChallenge({
+      variables: {
+        challengeID: activeChallenge.id,
+      },
+    });
   checkDate();
   const passiveChallenge =
     challenge.ownChallenges.length > 0 &&
@@ -73,11 +82,17 @@ const ChallengeComponent = ({ challenge, user }) => {
       </p>
       <p>Challenge duration: {challenge.duration} days</p>
       {activeChallenge ? (
-        <ActiveChallengeComponent challenge={activeChallenge} />
+        <div>
+          <ActiveChallengeComponent challenge={activeChallenge} />
+          <br />
+          <Button variant="outlined" color="red" onClick={abortChallenge}>
+            Abort challenge
+          </Button>
+        </div>
       ) : (
         <div>
           {passiveChallenge && (
-            <CompletedChallengeComponent challenge={passiveChallenge} />
+            <CompletedChallengeComponent challenge={passiveChallenge} duration={challenge.duration} />
           )}
           <br />
           <Button variant="outlined" color="primary" onClick={startChallenge}>

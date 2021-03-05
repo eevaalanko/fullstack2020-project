@@ -24,6 +24,7 @@ export const ALL_CHALLENGES = gql`
         endDate
         active
         entries
+        abortDate
       }
     }
   }
@@ -45,6 +46,7 @@ export const ACTIVE_OWN_CHALLENGES = gql`
       endDate
       active
       entries
+      abortDate
     }
   }
 `;
