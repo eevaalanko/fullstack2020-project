@@ -35,9 +35,7 @@ const ActiveChallengeComponent = ({ challenge }) => {
       //  setError(error.toString())
     },
   });
-  console.log("own chall: ", challenge);
   const setEntry = (e) => {
-    // alert("wheee");
     setValue(e);
     return editChallenge({
       variables: {

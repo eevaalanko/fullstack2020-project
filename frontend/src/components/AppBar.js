@@ -41,7 +41,6 @@ const AppBarComponent = ({ user }) => {
   const client = useApolloClient();
 
   const logout = () => {
-    alert("logged out!");
     history.push("/");
     localStorage.clear();
     client.resetStore();

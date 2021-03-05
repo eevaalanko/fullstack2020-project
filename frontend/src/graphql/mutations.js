@@ -27,6 +27,17 @@ export const STOP_OWN_CHALLENGE = gql`
   }
 `;
 
+export const CREATE_USER = gql`
+  mutation createUser($username: String!,
+   $password: String!) {
+    createUser(username: $username, password: $password) {
+      id
+      username
+      password
+    }
+  }
+`;
+
 export const CREATE_OWN_CHALLENGE = gql`
   mutation createOwnChallenge($challengeID: String!,
    $userID: String!, $description: String, $startDate: String, $endDate: String) {

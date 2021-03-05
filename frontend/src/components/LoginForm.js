@@ -22,7 +22,6 @@ const LoginForm = ({ setError }) => {
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;
-      console.log('tokeeeennnn: ', token)
       localStorage.setItem("user-token", token);
       history.push("/challenges");
       client.resetStore();
@@ -43,6 +42,7 @@ const LoginForm = ({ setError }) => {
           <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
+            id="username"
           />
         </div>
         <div>
@@ -51,9 +51,10 @@ const LoginForm = ({ setError }) => {
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+            id="password"
           />
         </div>
-        <button type="submit">login</button>
+        <button type="submit" id="login-button">login</button>
       </form>
     </div>
   );

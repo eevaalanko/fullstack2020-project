@@ -60,6 +60,7 @@ const typeDefs = gql`
 
   type User {
     username: String!
+    password: String!
     id: ID!
   }
 
@@ -98,7 +99,7 @@ const typeDefs = gql`
       duration: Int
       startDate: String
     ): Challenge
-    createUser(username: String!, favoriteGenre: String): User
+    createUser(username: String!, password: String!): User
     login(username: String!, password: String!): Token
   }
 `;
@@ -126,7 +127,6 @@ const resolvers = {
 
     allOwnChallenges: async (root, args, context) => {
       const currentUser = context.currentUser;
-      console.log("user is: ", currentUser);
       if (!currentUser) {
         throw new AuthenticationError("not permitted");
       }
@@ -139,7 +139,6 @@ const resolvers = {
 
     activeOwnChallenges: async (root, args, context) => {
       const currentUser = context.currentUser;
-      console.log("user is: ", currentUser);
       if (!currentUser) {
         throw new AuthenticationError("not permitted");
       }
@@ -187,7 +186,6 @@ const resolvers = {
         description: args.description || null,
         link: args.link || null,
         duration: args.duration || null,
-        startDate: args.startDate || null,
       });
 
       return challenge.save().catch((error) => {
@@ -247,7 +245,7 @@ const resolvers = {
     createUser: (root, args) => {
       const user = new User({
         username: args.username,
-        favoriteGenre: args.favoriteGenre || null,
+        password: args.password
       });
 
       return user.save().catch((error) => {
@@ -258,9 +256,7 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
-
-      if (!user || args.password !== "secret") {
-        // todo: set other passwords...
+      if (!user || args.password !== user.password) {
         throw new UserInputError("wrong credentials");
       }
 

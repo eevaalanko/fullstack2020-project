@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useApolloClient, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import ActiveChallengeComponent from "./ActiveChallengeComponent";
 import { CREATE_OWN_CHALLENGE, STOP_OWN_CHALLENGE } from "../graphql/mutations";
 import { ALL_CHALLENGES, ACTIVE_OWN_CHALLENGES } from "../graphql/queries";
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChallengeComponent = ({ challenge, user }) => {
-  console.log("this challenge is:   ", challenge);
   const today = dayjs();
   const endDate = dayjs().add(challenge.duration, "day");
   const classes = useStyles();
@@ -52,7 +51,6 @@ const ChallengeComponent = ({ challenge, user }) => {
   });
 
   const startChallenge = () => {
-    alert("wheee");
     return createChallenge({
       variables: {
         challengeID: challenge.id,

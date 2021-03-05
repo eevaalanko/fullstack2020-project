@@ -3,7 +3,7 @@
 |Date  |Hours|Done                                                     |
 |:----:|:---:|---------------------------------------------------------|
 |17.11.|6|POC|
-|26.11.|8|changement of subject and technologies for POC|                                                          |
+|26.11.|8|change of subject and technologies for POC|                                                          |
 |29.11.|7|database configuration|
 |30.11.|7|added material-ui and logo. implemented app bar|
 |01.12.|8|base styles and basic components, login -logout|
@@ -19,7 +19,7 @@
 |03.02.|8|fix calendar entries functionality|
 |05.02.|8|implement completed challenges component|
 |03.03.|8|implement challenge ending|
-||||
+|04.03.|6|implemented cypress tests POC|
 
 
 #### Total: 118 hours

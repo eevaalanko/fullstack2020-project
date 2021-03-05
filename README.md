@@ -14,12 +14,13 @@ user name: "user" password: "secret"
 
 ## Further development possibilities
 
+- sign up option
+- aborting ongoing challenge
 - share and compare your results with friends
 - add additional information to active challenges
 - list and compare own finished challenges
 - create your own challenges
-- sign up option
-- aborting ongoing challenge
+
 
 
 

@@ -23,8 +23,6 @@ const ChallengeList = ({ username }) => {
   const classes = useStyles();
   const challenges = useChallenges();
   const ownChallenges = useActiveOwnChallenges();
-  console.log("challenges: ", challenges);
-  console.log(" own challenges: ", ownChallenges);
   return (
     <div>
       <p>
