@@ -28,7 +28,7 @@ const authLink = setContext((_, { headers }) => {
 const httpLink = new HttpLink({ uri: "https://challenge-app-backend.herokuapp.com" });  // "http://localhost:4000"
 
 const wsLink = new WebSocketLink({
-  uri: "https://challenge-app-backend.herokuapp.com", //   "ws://localhost:4000/graphql",
+  uri: "ws://challenge-app-backend.herokuapp.com", //   "ws://localhost:4000/graphql",
   options: {
     reconnect: true,
   },
