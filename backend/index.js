@@ -5,7 +5,6 @@ const {
   ApolloServer,
   gql,
 } = require("apollo-server");
-const { PubSub } = require("apollo-server");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "NEED_HERE_A_SECRET_KEY";
@@ -277,6 +276,8 @@ const resolvers = {
 };
 
 const server = new ApolloServer({
+  introspection: true,
+  playground: true,
   typeDefs,
   resolvers,
   context: async ({ req }) => {
