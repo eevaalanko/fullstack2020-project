@@ -16,10 +16,12 @@ user name: "user" password: "secret"
 ##### Backend in Heroku: 
 https://challenge-app-backend.herokuapp.com
 
-### Further development possibilities
+##### Working Hours Time Table
+https://github.com/eevaalanko/fullstack2020-project/blob/main/workingHours.md
+
+##### Further development possibilities
 
 - sign up option
-- aborting ongoing challenge
 - share and compare your results with friends
 - add additional information to active challenges
 - list and compare own finished challenges
