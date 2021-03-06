@@ -1,4 +1,4 @@
-### Working Hours Time Table 17.11.2020 - 5.3.2021
+### Working Hours Time Table 17.11.2020 - 6.3.2021
 
 |Date  |Hours|Done                                                     |
 |:----:|:---:|---------------------------------------------------------|
@@ -21,8 +21,10 @@
 |03.03.|8|implement challenge ending|
 |04.03.|6|implemented cypress tests POC|
 |05.03.|8|updated cypress tests, implement abort challenge feature|
+|06.03.|8|deploy app to Heroku|
 
 
-#### Total: 150 hours
+
+#### Total: 158 hours
 
                                                                 
